@@ -1,7 +1,7 @@
 import os
 import shutil
-dir_minjust_info = '//17-ufop_full_30.08.2021'
-dir_minjust_structure = '//20200120143151-17_refresh/20200120143151-17_refresh'
+dir_minjust_info = '/home/diakap/PycharmProjects/XML_S3/17-ufop_full_30.08.2021'
+dir_minjust_structure = '/home/diakap/PycharmProjects/XML_S3/20200120143151-17_refresh/20200120143151-17_refresh'
 
 smallfile = None
 os.makedirs('result', exist_ok=True)
@@ -37,10 +37,11 @@ def splitter(which_list: str, dir_minjust_info, dir_minjust_structure, lines_per
 
     if which_list == 'uo':
         print('Makes UO split')
-        dir_target = '/home/diakap/PycharmProjects/Xml_S3/result/' + which_list
+        dir_target = '/home/diakap/PycharmProjects/XML_S3/result/' + which_list
         os.makedirs(dir_target, exist_ok=True)
         dict_path = uo_dict
         head, tail = os.path.split(dict_path['struct'])
+        shutil.copyfile(dict_path['struct'], '/'.join([dir_target, tail]))
         xml_file = dict_path['info']
         lines_per_file = 20000
         with open(xml_file, encoding='windows-1251') as bigfile:
@@ -56,9 +57,9 @@ def splitter(which_list: str, dir_minjust_info, dir_minjust_structure, lines_per
                             smallfile.close()
                         small_filename = which_list.upper() + '_XML_EDR_FULL_30.08.2021_{}_{}.xml'.format(lineno, lineno + lines_per_file)
                         small_folder = dir_target + '/' + small_filename[:-4]
-                        os.mkdir(small_folder)
+                        os.makedirs(small_folder, exist_ok=True)
                         smallfile = open('/'.join([small_folder, small_filename]), "w", encoding='windows-1251')
-                        shutil.copyfile(dict_path['struct'], '/'.join([small_folder, tail]))
+
                     smallfile.write(line)
                 else:
                     if lineno % lines_per_file == 0:
@@ -79,10 +80,11 @@ def splitter(which_list: str, dir_minjust_info, dir_minjust_structure, lines_per
 
     elif which_list == 'fop':
         print('Makes FOP split')
-        dir_target = '/home/diakap/PycharmProjects/Xml_S3/result/' + which_list
+        dir_target = '/home/diakap/PycharmProjects/XML_S3/result/' + which_list
         os.makedirs(dir_target, exist_ok=True)
         dict_path = fop_dict
         head, tail = os.path.split(dict_path['struct'])
+        shutil.copyfile(dict_path['struct'], '/'.join([dir_target, tail]))
         xml_file = dict_path['info']
         lines_per_file = 20000
         with open(xml_file, encoding='windows-1251') as bigfile:
@@ -98,7 +100,7 @@ def splitter(which_list: str, dir_minjust_info, dir_minjust_structure, lines_per
                             smallfile.close()
                         small_filename = which_list.upper() + '_XML_EDR_FULL_30.08.2021_{}_{}.xml'.format(lineno, lineno + lines_per_file)
                         small_folder = dir_target + '/' + small_filename[:-4]
-                        os.mkdir(small_folder)
+                        os.makedirs(small_folder, exist_ok=True)
                         smallfile = open('/'.join([small_folder, small_filename]), "w", encoding='windows-1251')
                         shutil.copyfile(dict_path['struct'], '/'.join([small_folder, tail]))
                     smallfile.write(line)
@@ -121,7 +123,7 @@ def splitter(which_list: str, dir_minjust_info, dir_minjust_structure, lines_per
 
 
 if __name__ == '__main__':
-    splitter(which_list='uo', dir_minjust_info='//17-ufop_full_30.08.2021',
-             dir_minjust_structure='//20200120143151-17_refresh/20200120143151-17_refresh')
-    splitter(which_list='fop', dir_minjust_info='//17-ufop_full_30.08.2021',
-             dir_minjust_structure='//20200120143151-17_refresh/20200120143151-17_refresh')
+    splitter(which_list='uo', dir_minjust_info=dir_minjust_info,
+             dir_minjust_structure=dir_minjust_structure)
+    splitter(which_list='fop', dir_minjust_info=dir_minjust_info,
+             dir_minjust_structure=dir_minjust_structure)
